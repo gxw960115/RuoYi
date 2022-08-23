@@ -55,7 +55,6 @@ public class AccountBook extends BaseEntity {
                 ", inoutType=" + inoutType +
                 ", amount=" + amount +
                 ", recordTime='" + recordTime + '\'' +
-//                ", remark='" + remark + '\'' +
                 '}';
     }
 }
