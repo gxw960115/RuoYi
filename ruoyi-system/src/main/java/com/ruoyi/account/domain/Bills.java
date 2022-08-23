@@ -2,19 +2,14 @@ package com.ruoyi.account.domain;
 
 import com.ruoyi.common.core.domain.BaseEntity;
 
-public class AccountBook extends BaseEntity {
+public class Bills extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
-
-    /*主键id*/
     private int id;
-    /*收支类型*/
     private int inoutType;
-    /*金额*/
     private float amount;
-    /*记录时间*/
     private String recordTime;
-
+//    private String remark;
+    private String uniqueIdentifier;
 
     public int getId() {
         return id;
@@ -48,14 +43,22 @@ public class AccountBook extends BaseEntity {
         this.recordTime = recordTime;
     }
 
+    public String getUniqueIdentifier() {
+        return uniqueIdentifier;
+    }
+
+    public void setUniqueIdentifier(String uniqueIdentifier) {
+        this.uniqueIdentifier = uniqueIdentifier;
+    }
+
     @Override
     public String toString() {
-        return "AccountBook{" +
+        return "Bills{" +
                 "id=" + id +
                 ", inoutType=" + inoutType +
                 ", amount=" + amount +
                 ", recordTime='" + recordTime + '\'' +
-//                ", remark='" + remark + '\'' +
+                ", uniqueIdentifier='" + uniqueIdentifier + '\'' +
                 '}';
     }
 }

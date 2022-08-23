@@ -36,7 +36,7 @@ public class AccountBookController extends BaseController {
     }
 
     /**
-     * 新增通知公告
+     * 新增账单
      */
     @PreAuthorize("@ss.hasPermi('account:sumary:add')")
     @Log(title = "家庭账单", businessType = BusinessType.INSERT)
@@ -58,7 +58,7 @@ public class AccountBookController extends BaseController {
     }
 
     /**
-     * 删除通知公告
+     * 删除账单
      */
     @PreAuthorize("@ss.hasPermi('account:sumary:remove')")
     @Log(title = "家庭账单", businessType = BusinessType.DELETE)

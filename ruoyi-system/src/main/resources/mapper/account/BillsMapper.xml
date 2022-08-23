@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.account.mapper.BillsMapper">
+
+    <resultMap type="Bills" id="billsResult">
+        <id property="id" column="id"/>
+        <result property="recordTime" column="record_time"/>
+        <result property="amount" column="amount"/>
+        <result property="inoutType" column="inout_type"/>
+        <result property="remark" column="remark"/>
+        <result property="uniqueIdentifier" column="unique_identifier"/>
+    </resultMap>
+
+    <sql id="selectBillsVO">
+        SELECT bn.`id`,
+               bn.`inout_type`,
+               bn.`amount`,
+               bn.`record_time`,
+               bn.`remark`,
+               bn.`unique_identifier`
+        FROM bills_note_v1 AS bn
+    </sql>
+
+    <sql id="sqlWhereSearch">
+        <where>
+            <if test="inoutType != null and inoutType != ''">
+                bn.`inout_type` = #{inoutType}
+            </if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(bn.`record_time`,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(bn.`record_time`,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+            <if test="remark != null and remark != ''">
+                bn.`remark` = ${remark}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectBills" parameterType="bills" resultMap="billsResult">
+        <include refid="selectBillsVO"/>
+        <include refid="sqlWhereSearch"/>
+    </select>
+
+    <select id="selectBillsById" parameterType="Long" resultMap="billsResult">
+        <include refid="selectBillsVO"/>
+        <where>
+            bn.`id` = ${billsId}
+        </where>
+    </select>
+
+    <insert id="insertBills" parameterType="accountBook">
+        INSERT INTO `bills_note_v1` (
+        <if test="inoutType != null and inoutType != ''">
+            `inout_type`
+        </if>
+        <if test="amount != null and amount != ''">
+            ,`amount`
+        </if>
+        <if test="remark != null and remark != ''">
+            ,`remark`
+        </if>
+        <if test="uniqueIdentifier != null and uniqueIdentifier != ''">
+            ,`unique_identifier`
+        </if>)
+        VALUES (
+        <if test="inoutType != null and inoutType != ''">
+            ${inoutType}
+        </if>
+        <if test="amount != null and amount != ''">
+            ,${amount}
+        </if>
+        <if test="remark != null and remark != ''">
+            ,${remark}
+        </if>
+        <if test="uniqueIdentifier != null and uniqueIdentifier != ''">
+            ,${uniqueIdentifier}
+        </if>)
+    </insert>
+
+    <update id="updateBills" parameterType="bills">
+        UPDATE `bills_note_v1` SET
+        <if test="inoutType != null and inoutType != ''">
+            `inout_type` = ${inoutType},
+        </if>
+        <if test="amount != null and amount != ''">
+            `amount` = ${amount},
+        </if>
+        <if test="remark != null and remark != ''">
+            `remark` = ${remark}
+        </if>
+        <where>
+            <if test="id != null and id != ''">
+                `id` = ${id}
+            </if>
+        </where>
+    </update>
+
+    <delete id="deleteBills" parameterType="bills">
+        DELETE FROM `bills_note_v1`
+        <where>
+            `id` in
+            <foreach collection="array" item="billsId" open="(" separator="," close=")">
+                ${billsId}
+            </foreach>
+        </where>
+    </delete>
+
+</mapper>
