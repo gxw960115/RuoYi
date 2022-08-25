@@ -9,7 +9,7 @@ public class AccountBook extends BaseEntity {
     /*主键id*/
     private int id;
     /*收支类型*/
-    private int inoutType;
+    private String inoutType;
     /*金额*/
     private float amount;
     /*记录时间*/
@@ -24,11 +24,11 @@ public class AccountBook extends BaseEntity {
         this.id = id;
     }
 
-    public int getInoutType() {
+    public String getInoutType() {
         return inoutType;
     }
 
-    public void setInoutType(int inoutType) {
+    public void setInoutType(String inoutType) {
         this.inoutType = inoutType;
     }
 

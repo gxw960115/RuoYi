@@ -1,13 +1,23 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="所属人" prop="remark">
-        <el-input
-          v-model="queryParams.remark"
-          placeholder="请输入所属人"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <!--      <el-form-item label="所属人" prop="remark">-->
+      <!--        <el-input-->
+      <!--          v-model="queryParams.remark"-->
+      <!--          placeholder="请输入所属人"-->
+      <!--          clearable-->
+      <!--          @keyup.enter.native="handleQuery"-->
+      <!--        />-->
+      <!--      </el-form-item>-->
+      <el-form-item label="收支类型" prop="inoutType">
+        <el-select v-model="queryParams.inoutType" placeholder="收支类型" clearable>
+          <el-option
+            v-for="dict in dict.type.sys_inout_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="记录时间" prop="recordTime">
         <el-date-picker
@@ -20,16 +30,7 @@
           end-placeholder="结束日期"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="收支类型" prop="inoutType">
-        <el-select v-model="queryParams.inoutType" placeholder="收支类型" clearable>
-          <el-option
-            v-for="dict in dict.type.sys_inout_type"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -78,28 +79,20 @@
     <el-table v-loading="loading" :data="AccountBookList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="序号" align="center" prop="id" width="100"/>
-      <el-table-column
-        label="所属人"
-        align="center"
-        prop="remark"
-        :show-overflow-tooltip="true"
-      />
-      <!-- <el-table-column label="所属人" align="center" prop="remark" width="100">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_notice_type" :value="scope.row.remark"/>
-        </template>
-      </el-table-column> -->
+      <el-table-column label="金额" align="center" prop="amount" width="100"/>
       <el-table-column label="收支类型" align="center" prop="inoutType" width="100">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_inout_type" :value="scope.row.inoutType"/>
         </template>
       </el-table-column>
-      <el-table-column label="金额" align="center" prop="amount" width="100"/>
+
       <el-table-column label="记录时间" align="center" prop="recordTime" width="100">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.recordTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true"
+      />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -136,8 +129,8 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="所属人" prop="remark">
-              <el-input v-model="form.remark" placeholder="请输入所属人"/>
+            <el-form-item label="金额" prop="amount">
+              <el-input v-model="form.amount" placeholder="请输入金额"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -154,9 +147,10 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="12">
-            <el-form-item label="金额" prop="amount">
-              <el-input v-model="form.amount" placeholder="请输入金额"/>
+          <el-col :span="24">
+            <el-form-item label="备注" prop="remark">
+              <!--              <el-input v-model="form.remark" placeholder="请输入备注"/>-->
+              <editor v-model="form.remark" :min-height="192"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -191,9 +185,8 @@ export default {
       total: 0,
       // 公告表格数据
       AccountBookList: [],
-
+      // 日期组件
       dateRange: [],
-      dateRangeSave: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -210,9 +203,9 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        remark: [
-          {required: true, message: "所属人不能为空", trigger: "blur"}
-        ],
+        // remark: [
+        //   {required: true, message: "所属人不能为空", trigger: "blur"}
+        // ],
         inoutType: [
           {required: true, message: "收支类型不能为空", trigger: "change"}
         ],
