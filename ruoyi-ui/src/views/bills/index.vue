@@ -40,12 +40,12 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
-                   v-hasPermi="['account:sumary:edit']">新增
+                   v-hasPermi="['account:bills:edit']">新增
         </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
-                   v-hasPermi="['account:sumary:edit']">修改
+                   v-hasPermi="['account:bills:edit']">修改
         </el-button>
       </el-col>
       <el-col :span="1.5">
@@ -89,16 +89,16 @@
             size="mini"
             type="text"
             icon="el-icon-edit"
-            @click="handleUpdate"
-            v-hasPermi="['account:sumary:edit']"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['account:bills:edit']"
           >修改
           </el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
-            @click="handleDelete"
-            v-hasPermi="['account:sumary:remove']"
+            @click="handleDelete(scope.row)"
+            v-hasPermi="['account:bills:remove']"
           >删除
           </el-button>
         </template>
