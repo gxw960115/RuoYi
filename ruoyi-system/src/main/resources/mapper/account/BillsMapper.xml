@@ -35,7 +35,7 @@
                 and date_format(bn.`record_time`,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
             </if>
             <if test="remark != null and remark != ''">
-                bn.`remark` = ${remark}
+                bn.`remark` = #{remark}
             </if>
         </where>
     </sql>
@@ -48,7 +48,7 @@
     <select id="selectBillsById" parameterType="Long" resultMap="billsResult">
         <include refid="selectBillsVO"/>
         <where>
-            bn.`id` = ${billsId}
+            bn.`id` = #{billsId}
         </where>
     </select>
 
@@ -68,33 +68,33 @@
         </if>)
         VALUES (
         <if test="inoutType != null and inoutType != ''">
-            ${inoutType}
+            #{inoutType}
         </if>
         <if test="amount != null and amount != ''">
-            ,${amount}
+            ,#{amount}
         </if>
         <if test="remark != null and remark != ''">
-            ,${remark}
+            ,#{remark}
         </if>
         <if test="uniqueIdentifier != null and uniqueIdentifier != ''">
-            ,${uniqueIdentifier}
+            ,#{uniqueIdentifier}
         </if>)
     </insert>
 
     <update id="updateBills" parameterType="bills">
         UPDATE `bills_note_v1` SET
         <if test="inoutType != null and inoutType != ''">
-            `inout_type` = ${inoutType},
+            `inout_type` = #{inoutType},
         </if>
         <if test="amount != null and amount != ''">
-            `amount` = ${amount},
+            `amount` = #{amount},
         </if>
         <if test="remark != null and remark != ''">
-            `remark` = ${remark}
+            `remark` = #{remark}
         </if>
         <where>
             <if test="id != null and id != ''">
-                `id` = ${id}
+                `id` = #{id}
             </if>
         </where>
     </update>
@@ -104,7 +104,7 @@
         <where>
             `id` in
             <foreach collection="array" item="billsId" open="(" separator="," close=")">
-                ${billsId}
+                #{billsId}
             </foreach>
         </where>
     </delete>

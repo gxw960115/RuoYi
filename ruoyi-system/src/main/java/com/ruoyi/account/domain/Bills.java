@@ -5,7 +5,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 public class Bills extends BaseEntity {
 
     private int id;
-    private int inoutType;
+    private String inoutType;
     private float amount;
     private String recordTime;
 //    private String remark;
@@ -19,11 +19,11 @@ public class Bills extends BaseEntity {
         this.id = id;
     }
 
-    public int getInoutType() {
+    public String getInoutType() {
         return inoutType;
     }
 
-    public void setInoutType(int inoutType) {
+    public void setInoutType(String inoutType) {
         this.inoutType = inoutType;
     }
 

@@ -5,9 +5,11 @@ import com.ruoyi.account.mapper.BillsMapper;
 import com.ruoyi.account.service.IBillsService;
 import com.ruoyi.common.utils.uuid.IdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class billsServiceImpl implements IBillsService {
     @Autowired
     private BillsMapper billsMapper;
