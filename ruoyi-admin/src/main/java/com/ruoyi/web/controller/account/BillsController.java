@@ -1,6 +1,5 @@
 package com.ruoyi.web.controller.account;
 
-import com.ruoyi.account.domain.AccountBook;
 import com.ruoyi.account.domain.Bills;
 import com.ruoyi.account.service.IBillsService;
 import com.ruoyi.common.annotation.Log;
@@ -46,7 +45,7 @@ public class BillsController extends BaseController {
     }
 
     /**
-     * @param accountBook
+     * @param bills
      * @return
      */
     @PreAuthorize("@ss.hasPermi('account:bills:edit')")
