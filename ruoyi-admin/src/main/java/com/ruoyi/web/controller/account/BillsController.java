@@ -38,7 +38,7 @@ public class BillsController extends BaseController {
      * 新增账单
      */
     @PreAuthorize("@ss.hasPermi('account:bills:add')")
-    @Log(title = "家庭账单", businessType = BusinessType.INSERT)
+    @Log(title = "账单流水", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@Validated @RequestBody Bills bills) {
         return toAjax(billsService.insertBills(bills));
@@ -49,7 +49,7 @@ public class BillsController extends BaseController {
      * @return
      */
     @PreAuthorize("@ss.hasPermi('account:bills:edit')")
-    @Log(title = "家庭账单", businessType = BusinessType.UPDATE)
+    @Log(title = "账单流水", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody Bills bills) {
 //        notice.setUpdateBy(getUsername());
@@ -60,7 +60,7 @@ public class BillsController extends BaseController {
      * 删除账单
      */
     @PreAuthorize("@ss.hasPermi('account:bills:remove')")
-    @Log(title = "家庭账单", businessType = BusinessType.DELETE)
+    @Log(title = "账单流水", businessType = BusinessType.DELETE)
     @DeleteMapping("/{billsId}")
     public AjaxResult remove(@PathVariable Long[] billsId) {
         return toAjax(billsService.deleteBills(billsId));
