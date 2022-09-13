@@ -40,12 +40,14 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
-                   v-hasPermi="['account:bills:edit']">新增
+                   v-hasPermi="['account:bills:edit']"
+        >新增
         </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
-                   v-hasPermi="['account:bills:edit']">修改
+                   v-hasPermi="['account:bills:edit']"
+        >修改
         </el-button>
       </el-col>
       <el-col :span="1.5">
@@ -77,12 +79,12 @@
           <span>{{ parseTime(scope.row.recordTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="备注"
-        align="center"
-        prop="remark"
-        :show-overflow-tooltip="true"
-      />
+<!--      <el-table-column-->
+<!--        label="备注"-->
+<!--        align="center"-->
+<!--        prop="remark"-->
+<!--        :show-overflow-tooltip="true"-->
+<!--      />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -105,13 +107,15 @@
       </el-table-column>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
-                @pagination="getList"></pagination>
+                @pagination="getList"
+    ></pagination>
     <!--  添加或修改公告对话框  -->
     <el-dialog
       title="title"
       :visible.sync="open"
       width="780px"
-      append-to-body>
+      append-to-body
+    >
       <el-form ref="form" :model="form" label-width="80px" :rules="rules">
         <el-row>
           <el-col :span="12">
@@ -136,7 +140,7 @@
           <el-col :span="24">
             <el-form-item label="备注" prop="remark">
               <!--              <el-input v-model="form.remark" placeholder="请输入备注"/>-->
-              <editor v-model="form.remark" :min-height="192"/>
+              <editor v-model="form.remark" :min-height="192" placeholder="请输入备注信息"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -150,10 +154,10 @@
 </template>
 
 <script>
-import {listBills, getBills, delBills, addBills, updateBills} from "@/api/bills/bills"
+import { listBills, getBills, delBills, addBills, updateBills } from '@/api/bills/bills'
 
 export default {
-  name: "bills",
+  name: 'bills',
   dicts: ['sys_inout_type'],
   data() {
     return {
@@ -174,7 +178,7 @@ export default {
       // 日期组件
       dateRange: [],
       // 弹出层标题
-      title: "",
+      title: '',
       // 是否显示弹出层
       open: false,
       // 查询参数
@@ -187,46 +191,49 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        remark: [
-          {required: true, message: "所属人不能为空", trigger: "blur"}
+        amount: [
+          { required: true, message: '金额不能为空', trigger: 'blur' }
+        ],
+        inoutType: [
+          { required: true, message: '收支类型不能为空', trigger: 'change' }
         ]
       }
-    };
+    }
   },
   created() {
-    this.getList();
+    this.getList()
   },
   methods: {
     /*查询公告列表*/
     getList() {
-      this.loading = true;
+      this.loading = true
       listBills(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
-        this.BillsList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
+        this.BillsList = response.rows
+        this.total = response.total
+        this.loading = false
+      })
     },
     // 取消搜索
     cancel() {
-      this.open = false;
-      this.reset();
+      this.open = false
+      this.reset()
     },
     // 表单重置
     reset() {
       this.form = {
         remark: undefined
-      };
-      this.resetForm("form");
+      }
+      this.resetForm('form')
     },
     /*搜索按钮操作*/
     handleQuery() {
-      this.queryParams.pageNUm = 1;
-      this.getList();
+      this.queryParams.pageNUm = 1
+      this.getList()
     },
     /*重置按钮操作*/
     resetQuery() {
-      this.resetForm("queryForm");
-      this.handleQuery();
+      this.resetForm('queryForm')
+      this.handleQuery()
     },
     /*多选框选中数据*/
     handleSelectionChange(selection) {
@@ -236,51 +243,51 @@ export default {
     },
     /*新增按钮操作*/
     handleAdd() {
-      this.reset();
-      this.open = true;
-      this.title = "添加账单";
+      this.reset()
+      this.open = true
+      this.title = '添加账单'
     },
     /*修改按钮操作*/
     handleUpdate(row) {
-      this.reset();
+      this.reset()
       const billsId = row.id || this.ids
       getBills(billsId).then(response => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改账单";
-      });
+        this.form = response.data
+        this.open = true
+        this.title = '修改账单'
+      })
     },
     /*提交按钮*/
-    submitForm: function () {
-      this.$refs["form"].validate(valid => {
+    submitForm: function() {
+      this.$refs['form'].validate(valid => {
         if (valid) {
           if (this.form.id != undefined) {
             updateBills(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
+              this.$modal.msgSuccess('修改成功')
+              this.open = false
+              this.getList()
+            })
           } else {
             addBills(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
+              this.$modal.msgSuccess('新增成功')
+              this.open = false
+              this.getList()
+            })
           }
         }
-      });
+      })
     },
     /*删除按钮操作*/
     handleDelete(row) {
       const billsIds = row.id || this.ids
-      this.$modal.confirm('是否确认删除账单编号为"' + billsIds + '"的数据项？').then(function () {
-        return delBills(billsIds);
+      this.$modal.confirm('是否确认删除账单编号为"' + billsIds + '"的数据项？').then(function() {
+        return delBills(billsIds)
       }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
+        this.getList()
+        this.$modal.msgSuccess('删除成功')
       }).catch(() => {
-      });
+      })
     }
   }
-};
+}
 </script>
